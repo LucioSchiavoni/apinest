@@ -1,21 +1,22 @@
-//Aqui se relaciona el createUserService con el prismaUserRepository tambien se trae la conexion de prisma 
-//Se llama el controlador que use los siguientes servicios
-// src/modules/users/users.module.ts
 import { Module } from '@nestjs/common';
-
-
 import { CreateUserService } from '../../application/services/create-user.service';
-
+import { PrismaUserRepository } from 'src/infrastructure/repositories/prisma-user.repository';
+import { PrismaService } from 'src/infrastructure/orm/prisma.service';
+import { USER_REPOSITORY } from 'src/domain/interfaces/user.repository';
+import { GetUserService } from 'src/application/services/get-user.service';
+import { UsersController } from 'src/infrastructure/controllers/users.controller';
+import { PrismaModule } from 'src/infrastructure/orm/prisma.module';
 
 @Module({
-  controllers: [],
+  imports: [PrismaModule],
+  controllers: [UsersController],
   providers: [
-    //PrismaService,
-    // { provide: 'UserRepository', useClass: PrismaUserRepository },
+    { provide: USER_REPOSITORY, useClass: PrismaUserRepository },
     CreateUserService,
+    GetUserService,
   ],
+  exports: [CreateUserService,
+    GetUserService,
+     { provide: USER_REPOSITORY, useClass: PrismaUserRepository }],
 })
 export class UsersModule {}
-
-
-

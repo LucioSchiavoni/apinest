@@ -28,6 +28,8 @@
 
 ## Project setup
 
+Crear la carpeta /uploads en la raiz del proyecto
+
 ```bash
 $ npm install
 ```

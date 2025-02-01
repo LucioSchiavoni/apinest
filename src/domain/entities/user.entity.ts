@@ -5,8 +5,10 @@ export class User {
         public readonly username: string,
         public readonly email: string,
         private password: string,
-        public readonly phone: string,
-        private address: string,
+        public phone?: string,
+        private address?: string,
+        public fullName?: string,
+        public image?: string
     ){}
 
     public getPassword(): string {
@@ -14,7 +16,7 @@ export class User {
     }
 
     public getAddress(): string {
-        return this.address;
+        return this.address ?? '';
     }
 
     updatePassword(newPassword: string): void {
