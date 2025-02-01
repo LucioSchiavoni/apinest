@@ -9,9 +9,14 @@ export class ProductService {
     @Inject('ProductRepository') private readonly productRepository: ProductRepository,
     @Inject('FileStorage') private readonly fileStorage: FileStorage
   ) {}
-
-  async createProduct(dto: Product, image: Express.Multer.File) {
+  
+  async createProduct(dto: Product, image: Express.Multer.File): Promise <Product> {
     const imageUrl = await this.fileStorage.uploadFile(image); 
     return await this.productRepository.save({...dto, image: imageUrl});
+  } 
+
+  async getProducts(): Promise<Product[]> {
+    return await this.productRepository.findAllProducts() || [];
   }
+
 }

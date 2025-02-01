@@ -6,15 +6,18 @@ import { ConfigModule } from '@nestjs/config';
 import { ProductModule } from './modules/product/product.module';
 import * as path from 'path';
 import { MulterModule } from '@nestjs/platform-express';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({isGlobal: true}),
     UsersModule,
     MulterModule.register({
       dest: path.join(__dirname, '../infraestructure/uploads') 
     }),
-    ProductModule],
+    ProductModule,
+    AuthModule
+  ],
   controllers: [],
   providers: [],
 })

@@ -5,26 +5,31 @@ import { Inject, Injectable } from "@nestjs/common";
 import { User } from "src/domain/entities/user.entity";
 import { USER_REPOSITORY, UserRepository } from "src/domain/interfaces/user.repository";
 import { CreateUserDto } from "src/application/dto/create-user.dto";
+import { FileStorage } from "src/domain/interfaces/file.storage.interface";
 
 
 @Injectable()
 export class CreateUserService {
-    constructor(@Inject(USER_REPOSITORY) private readonly userRepository: UserRepository){}
+    constructor(@Inject(USER_REPOSITORY) private readonly userRepository: UserRepository,
+    @Inject('Filestorage') private readonly fileStorage: FileStorage
+){}
 
-    async execute(dto: CreateUserDto): Promise<User>{
+    async execute(dto: CreateUserDto, image?: Express.Multer.File): Promise<User>{
         const existingUser = await this.userRepository.findByUsername(dto.username)
 
         if(existingUser){
             throw new Error("Username already taken.");
         }
 
+        const imageUrl = image ? await this.fileStorage.uploadFile(image) : '';
         const user = new User(
             dto.username,
             dto.email,
             dto.password,
-            dto.phone,
-            dto.address,
+            dto.phone ?? '',
+            dto.address ?? '',
             dto.fullName,
+            imageUrl
         );
         
         return await this.userRepository.save(user);

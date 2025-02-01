@@ -1,4 +1,4 @@
-import { Controller, Post, UseInterceptors, UploadedFile, Body } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, UploadedFile, Body, Get } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductService } from 'src/application/services/create-product.service';
 import { Product } from 'src/domain/entities/product.entity';
@@ -14,5 +14,10 @@ export class ProductController {
     @Body() createProductDto: Product, 
   ) {
     return this.productService.createProduct(createProductDto, file);
+  }
+
+  @Get()
+  async getProducts() {
+    return this.productService.getProducts();
   }
 }

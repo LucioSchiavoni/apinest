@@ -34,8 +34,8 @@ export class PrismaProductRepository implements ProductRepository {
         return data.map(product => new Product(
             product.id.toString(),
             product.name,
-            product.price,
             product.description,
+            product.price,
             product.image,
             product.type
         ))
